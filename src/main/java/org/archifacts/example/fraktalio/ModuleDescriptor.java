@@ -1,0 +1,49 @@
+package org.archifacts.example.fraktalio;
+
+import java.util.Optional;
+
+import org.archifacts.core.descriptor.ArtifactContainerDescriptor;
+import org.archifacts.core.model.ArtifactContainerType;
+
+import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaPackage;
+
+final class ModuleDescriptor implements ArtifactContainerDescriptor {
+
+	private static final ArtifactContainerType TYPE = ArtifactContainerType.of("Module");
+
+	private final String basePackage;
+
+	ModuleDescriptor(final String basePackage) {
+		this.basePackage = basePackage;
+	}
+
+	@Override
+	public Optional<String> containerNameOf(final JavaClass javaClass) {
+		return moduleOf(javaClass.getPackage());
+	}
+
+	private Optional<String> moduleOf(final JavaPackage javaPackage) {
+		return toJavaOptional(javaPackage.getParent()).map(parent -> {
+			if (basePackage.equals(parent.getName())) {
+				String relativeName = javaPackage.getRelativeName();
+				if (!"api".equals(relativeName)) {
+					return Optional.of(relativeName);
+				} else {
+					return Optional.<String>empty();
+				}
+			} else {
+				return moduleOf(parent);
+			}
+		}).orElse(Optional.<String>empty());
+	}
+
+	private <T> Optional<T> toJavaOptional(final com.tngtech.archunit.base.Optional<T> optional) {
+		return optional.map(Optional::of).orElseGet(Optional::empty);
+	}
+
+	@Override
+	public ArtifactContainerType type() {
+		return TYPE;
+	}
+}
