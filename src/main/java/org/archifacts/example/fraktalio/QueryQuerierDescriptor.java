@@ -14,9 +14,11 @@ import com.tngtech.archunit.core.domain.JavaConstructorCall;
 
 class QueryQuerierDescriptor implements TargetBasedArtifactRelationshipDescriptor {
 
+	private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("queries");
+
 	@Override
 	public ArtifactRelationshipRole role() {
-		return ArtifactRelationshipRole.of("queries");
+		return ROLE;
 	}
 
 	@Override

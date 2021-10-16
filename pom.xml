@@ -25,6 +25,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.archifacts</groupId>
+			<artifactId>archifacts-spring</artifactId>
+			<version>${archifacts.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.archifacts</groupId>
+			<artifactId>archifacts-asciidoc</artifactId>
+			<version>${archifacts.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.archifacts</groupId>
 			<artifactId>archifacts-plaintext</artifactId>
 			<version>${archifacts.version}</version>
 		</dependency>
@@ -42,7 +52,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.fraktalio</groupId>
-			<artifactId>order</artifactId>
+			<artifactId>restaurant</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>runtime</scope>
 			<exclusions>
@@ -54,7 +64,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.fraktalio</groupId>
-			<artifactId>restaurant</artifactId>
+			<artifactId>order</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>runtime</scope>
 			<exclusions>

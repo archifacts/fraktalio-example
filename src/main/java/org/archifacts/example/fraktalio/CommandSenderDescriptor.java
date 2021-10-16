@@ -14,9 +14,11 @@ import com.tngtech.archunit.core.domain.JavaConstructorCall;
 
 class CommandSenderDescriptor implements TargetBasedArtifactRelationshipDescriptor {
 
+	private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("sends");
+
 	@Override
 	public ArtifactRelationshipRole role() {
-		return ArtifactRelationshipRole.of("sends");
+		return ROLE;
 	}
 
 	@Override

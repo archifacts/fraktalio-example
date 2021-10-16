@@ -14,9 +14,11 @@ import com.tngtech.archunit.core.domain.JavaConstructorCall;
 
 class EventPublisherDescriptor implements TargetBasedArtifactRelationshipDescriptor {
 
+	private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("publishes");
+
 	@Override
 	public ArtifactRelationshipRole role() {
-		return ArtifactRelationshipRole.of("publishes");
+		return ROLE;
 	}
 
 	@Override
