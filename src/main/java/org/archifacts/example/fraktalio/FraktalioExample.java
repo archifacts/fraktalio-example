@@ -27,28 +27,39 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.archifacts.core.model.Application;
 import org.archifacts.integration.asciidoc.AsciiDoc;
-import org.archifacts.integration.plaintext.ApplicationOverview;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
-public class FraktalioExample {
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Parameters;
+
+@Command(description = "Generates a AsciiDoc based documentation of the Fraktalio demo application.")
+public class FraktalioExample implements Runnable {
+
+	@Parameters(index = "0", description = "The output folder")
+	private Path outputFolder;
 
 	private static final String ApplicationPackage = "com.fraktalio";
 
-	public static void main(String[] args) throws IOException {
-		new FraktalioExample().generateDocumentation();
+	public static void main(String[] args) {
+		int exitCode = new CommandLine(new FraktalioExample()).execute(args);
+		System.exit(exitCode);
 	}
 
-	private void generateDocumentation() throws IOException {
+	public void run() {
 		final JavaClasses javaClasses = new ClassFileImporter().importPackages(ApplicationPackage);
 		final Application application = initApplication(javaClasses);
-		writeApplicationOverviewToFile(application, Paths.get("export", "overview.txt"));
-		writeAsciidoc(application, Paths.get("export", "overview.adoc"));
+		try {
+			Files.createDirectories(outputFolder);
+			writeAsciidoc(application, outputFolder.resolve("fraktalio.adoc"));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private Application initApplication(final JavaClasses javaClasses) {
@@ -77,14 +88,6 @@ public class FraktalioExample {
 
 	}
 
-	private void writeApplicationOverviewToFile(final Application application, Path outputFile) throws IOException {
-		Files.createDirectories(outputFile.getParent());
-		try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
-			new ApplicationOverview(application).writeToWriter(writer);
-		}
-		System.out.println("Application overview written to " + outputFile.toString());
-	}
-
 	private void writeAsciidoc(final Application application, Path outputFile) throws IOException {
 
 		AsciiDoc asciiDoc = new AsciiDoc("Fraktalio");
@@ -94,10 +97,8 @@ public class FraktalioExample {
 		try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
 			asciiDoc.writeToWriter(writer);
 		}
-		
+
 		System.out.println("Asciidoc written to " + outputFile.toString());
 	}
-	
-
 
 }

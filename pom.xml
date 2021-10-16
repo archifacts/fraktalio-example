@@ -11,6 +11,7 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<archifacts.version>0.2.1-SNAPSHOT</archifacts.version>
 		<structurizr-core.version>1.9.8</structurizr-core.version>
+		<picocli.version>4.6.1</picocli.version>
 	</properties>
 
 	<dependencies>
@@ -40,9 +41,9 @@
 			<version>${archifacts.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.archifacts</groupId>
-			<artifactId>archifacts-plaintext</artifactId>
-			<version>${archifacts.version}</version>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>${picocli.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.structurizr</groupId>
@@ -92,6 +93,65 @@
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<phase>process-classes</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>org.archifacts.example.fraktalio.FraktalioExample</mainClass>
+					<arguments>
+						<argument>${project.build.directory}/docs</argument>
+					</arguments>
+				</configuration>
+				
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											exec-maven-plugin
+										</artifactId>
+										<versionRange>
+											[3.0.0,)
+										</versionRange>
+										<goals>
+											<goal>java</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 	<repositories>
 		<repository>
 			<id>archifacts-snapshots</id>
