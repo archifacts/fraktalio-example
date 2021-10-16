@@ -8,8 +8,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.archifacts.core.model.Application;
-import org.archifacts.core.model.Artifact;
-import org.archifacts.core.model.ArtifactContainer;
 import org.archifacts.core.model.ArtifactRelationship;
 
 class FraktalioApplication {
@@ -26,24 +24,27 @@ class FraktalioApplication {
 					.collect(Collectors.toSet());
 	}
 	
-	Set<Artifact> getPublishedEventsForModule(ArtifactContainer module) {
-		return module.getOutgoingRelationshipsOfRole(EventPublisherDescriptor.role())
+	Set<FraktalioEvent> getPublishedEvents() {
+		return application.getRelationshipsOfRole(EventPublisherDescriptor.role())
 				.stream()
 				.map(ArtifactRelationship::getTarget)
+				.map(FraktalioEvent::new)
 				.collect(Collectors.toSet());
 	}
 	
-	Set<Artifact> getSentCommandsForModule(ArtifactContainer module) {
-		return  module.getOutgoingRelationshipsOfRole(CommandSenderDescriptor.role())
+	Set<FraktalioCommand> getSentCommands() {
+		return application.getRelationshipsOfRole(CommandSenderDescriptor.role())
 				.stream()
 				.map(ArtifactRelationship::getTarget)
+				.map(FraktalioCommand::new)
 				.collect(Collectors.toSet());
 	}
 	
-	Set<Artifact> getQueriedQueriesForModule(ArtifactContainer module) {
-		return module.getOutgoingRelationshipsOfRole(QueryQuerierDescriptor.role())
+	Set<FraktalioQuery> getQueriedQueries() {
+		return application.getRelationshipsOfRole(QueryQuerierDescriptor.role())
 				.stream()
 				.map(ArtifactRelationship::getTarget)
+				.map(FraktalioQuery::new)
 				.collect(Collectors.toSet());
 	}
 }

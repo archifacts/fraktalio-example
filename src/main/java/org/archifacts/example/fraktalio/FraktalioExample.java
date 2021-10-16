@@ -88,13 +88,16 @@ public class FraktalioExample {
 	private void writeAsciidoc(final Application application, Path outputFile) throws IOException {
 
 		AsciiDoc asciiDoc = new AsciiDoc("Fraktalio");
-		asciiDoc.addDocElement(new ModuleInteractionMatrix(new FraktalioApplication(application)));
+		final FraktalioApplication fraktalioApplication = new FraktalioApplication(application);
+		asciiDoc.addDocElement(new ModuleInteractionMatrix(fraktalioApplication));
+		asciiDoc.addDocElement(new C4ModelRenderer(fraktalioApplication));
 		try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
 			asciiDoc.writeToWriter(writer);
 		}
 		
-		
 		System.out.println("Asciidoc written to " + outputFile.toString());
 	}
+	
+
 
 }
