@@ -1,15 +1,15 @@
-package org.archifacts.example.fraktalio;
+package org.archifacts.example.fraktalio.model;
 
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.RelationshipDescriptors.EventPublisherDescriptor;
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.RelationshipDescriptors.CommandSenderDescriptor;
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.RelationshipDescriptors.QueryQuerierDescriptor;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.RelationshipDescriptors.CommandSenderDescriptor;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.RelationshipDescriptors.EventPublisherDescriptor;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.RelationshipDescriptors.QueryQuerierDescriptor;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.archifacts.core.model.ArtifactContainer;
 import org.archifacts.core.model.ArtifactRelationship;
-final class FraktalioModule {
+public final class FraktalioModule {
 
 	private final ArtifactContainer artifactContainer;
 
@@ -17,15 +17,15 @@ final class FraktalioModule {
 		this.artifactContainer = artifactContainer;
 	}
 	
-	ArtifactContainer getArtifactContainer() {
+	public ArtifactContainer getArtifactContainer() {
 		return artifactContainer;
 	}
 	
-	String getName() {
+	public String getName() {
 		return artifactContainer.getName();
 	}
 	
-	Set<FraktalioEvent> getPublishedEvents() {
+	public Set<FraktalioEvent> getPublishedEvents() {
 		return artifactContainer.getOutgoingRelationshipsOfRole(EventPublisherDescriptor.role())
 				.stream()
 				.map(ArtifactRelationship::getTarget)
@@ -33,7 +33,7 @@ final class FraktalioModule {
 				.collect(Collectors.toSet());
 	}
 	
-	Set<FraktalioCommand> getSentCommands() {
+	public Set<FraktalioCommand> getSentCommands() {
 		return artifactContainer.getOutgoingRelationshipsOfRole(CommandSenderDescriptor.role())
 				.stream()
 				.map(ArtifactRelationship::getTarget)
@@ -41,7 +41,7 @@ final class FraktalioModule {
 				.collect(Collectors.toSet());
 	}
 	
-	Set<FraktalioQuery> getQueriedQueries() {
+	public Set<FraktalioQuery> getQueriedQueries() {
 		return artifactContainer.getOutgoingRelationshipsOfRole(QueryQuerierDescriptor.role())
 				.stream()
 				.map(ArtifactRelationship::getTarget)

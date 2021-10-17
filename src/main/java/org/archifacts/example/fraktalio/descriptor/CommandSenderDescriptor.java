@@ -1,6 +1,6 @@
-package org.archifacts.example.fraktalio;
+package org.archifacts.example.fraktalio.descriptor;
 
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.BuildingBlockDescriptors.Query;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.BuildingBlockDescriptors.CommandDescriptor;
 
 import java.util.stream.Stream;
 
@@ -12,9 +12,9 @@ import org.archifacts.core.model.BuildingBlock;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaConstructorCall;
 
-class QueryQuerierDescriptor implements TargetBasedArtifactRelationshipDescriptor {
+class CommandSenderDescriptor implements TargetBasedArtifactRelationshipDescriptor {
 
-	private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("queries");
+	private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("sends");
 
 	@Override
 	public ArtifactRelationshipRole role() {
@@ -23,7 +23,7 @@ class QueryQuerierDescriptor implements TargetBasedArtifactRelationshipDescripto
 
 	@Override
 	public boolean isTarget(Artifact targetCandidateArtifact) {
-		return targetCandidateArtifact instanceof BuildingBlock buildingBlock && buildingBlock.getType() == Query;
+		return targetCandidateArtifact instanceof BuildingBlock buildingBlock && buildingBlock.getType() == CommandDescriptor.type();
 	}
 
 	@Override

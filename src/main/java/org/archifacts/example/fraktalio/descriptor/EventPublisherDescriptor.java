@@ -1,6 +1,6 @@
-package org.archifacts.example.fraktalio;
+package org.archifacts.example.fraktalio.descriptor;
 
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.BuildingBlockDescriptors.Event;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.BuildingBlockDescriptors.EventDescriptor;
 
 import java.util.stream.Stream;
 
@@ -23,7 +23,7 @@ class EventPublisherDescriptor implements TargetBasedArtifactRelationshipDescrip
 
 	@Override
 	public boolean isTarget(Artifact targetCandidateArtifact) {
-		return targetCandidateArtifact instanceof BuildingBlock buildingBlock && buildingBlock.getType() == Event;
+		return targetCandidateArtifact instanceof BuildingBlock buildingBlock && buildingBlock.getType() == EventDescriptor.type();
 	}
 
 	@Override

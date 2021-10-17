@@ -1,12 +1,12 @@
 package org.archifacts.example.fraktalio;
 
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.BuildingBlockDescriptors.CommandDescriptor;
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.BuildingBlockDescriptors.EventDescriptor;
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.BuildingBlockDescriptors.QueryDescriptor;
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.ContainerDescriptors.ModuleDescriptor;
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.RelationshipDescriptors.CommandSenderDescriptor;
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.RelationshipDescriptors.EventPublisherDescriptor;
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.RelationshipDescriptors.QueryQuerierDescriptor;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.BuildingBlockDescriptors.CommandDescriptor;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.BuildingBlockDescriptors.EventDescriptor;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.BuildingBlockDescriptors.QueryDescriptor;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.ContainerDescriptors.ModuleDescriptor;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.RelationshipDescriptors.CommandSenderDescriptor;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.RelationshipDescriptors.EventPublisherDescriptor;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.RelationshipDescriptors.QueryQuerierDescriptor;
 import static org.archifacts.integration.axon.AxonDescriptors.BuildingBlockDescriptors.AggregateRootDescriptor;
 import static org.archifacts.integration.axon.AxonDescriptors.BuildingBlockDescriptors.EntityDescriptor;
 import static org.archifacts.integration.axon.AxonDescriptors.BuildingBlockDescriptors.SagaDescriptor;
@@ -22,15 +22,12 @@ import static org.archifacts.integration.spring.SpringDescriptors.BuildingBlockD
 import static org.archifacts.integration.spring.SpringDescriptors.BuildingBlockDescriptors.ControllerDescriptor;
 import static org.archifacts.integration.spring.SpringDescriptors.BuildingBlockDescriptors.RepositoryDescriptor;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.archifacts.core.model.Application;
-import org.archifacts.integration.asciidoc.AsciiDoc;
-import org.archifacts.integration.asciidoc.TextDocElement;
+import org.archifacts.example.fraktalio.asciidoc.AsciiDocWriter;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
@@ -56,7 +53,7 @@ public class FraktalioExample implements Runnable {
 		final Application application = initApplication(javaClasses);
 		try {
 			Files.createDirectories(outputFolder);
-			writeAsciidoc(application, outputFolder.resolve("index.adoc"));
+			new AsciiDocWriter().writeAsciidoc(application, outputFolder.resolve("index.adoc"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -88,18 +85,6 @@ public class FraktalioExample implements Runnable {
 
 	}
 
-	private void writeAsciidoc(final Application application, Path outputFile) throws IOException {
 
-		AsciiDoc asciiDoc = new AsciiDoc("Fraktalio");
-		final FraktalioApplication fraktalioApplication = new FraktalioApplication(application);
-		asciiDoc.addDocElement(new TextDocElement("\ninclude::preamble.adoc[]\n") );
-		asciiDoc.addDocElement(new ModuleInteractionMatrix(fraktalioApplication));
-		asciiDoc.addDocElement(new C4ModelRenderer(fraktalioApplication));
-		try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
-			asciiDoc.writeToWriter(writer);
-		}
-
-		System.out.println("Asciidoc written to " + outputFile.toString());
-	}
 
 }

@@ -1,4 +1,4 @@
-package org.archifacts.example.fraktalio;
+package org.archifacts.example.fraktalio.asciidoc;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,10 @@ import java.util.stream.Collectors;
 
 import org.archifacts.core.model.BuildingBlock;
 import org.archifacts.core.model.MiscArtifact;
+import org.archifacts.example.fraktalio.model.FraktalioApplication;
+import org.archifacts.example.fraktalio.model.FraktalioCommand;
+import org.archifacts.example.fraktalio.model.FraktalioEvent;
+import org.archifacts.example.fraktalio.model.FraktalioQuery;
 import org.archifacts.core.model.ExternalArtifact;
 import org.archifacts.core.model.Artifact;
 import org.archifacts.core.model.ArtifactContainer;

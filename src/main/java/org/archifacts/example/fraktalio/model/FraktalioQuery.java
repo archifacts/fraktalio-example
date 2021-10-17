@@ -1,6 +1,6 @@
-package org.archifacts.example.fraktalio;
+package org.archifacts.example.fraktalio.model;
 
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.RelationshipDescriptors.QueryQuerierDescriptor;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.RelationshipDescriptors.QueryQuerierDescriptor;
 import static org.archifacts.integration.axon.AxonDescriptors.RelationshipDescriptors.QueryHandlerDescriptor;
 
 import java.util.Set;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.archifacts.core.model.Artifact;
 import org.archifacts.core.model.ArtifactRelationship;
 
-final class FraktalioQuery {
+public final class FraktalioQuery {
 
 	private final Artifact artifact;
 
@@ -17,22 +17,22 @@ final class FraktalioQuery {
 		this.artifact = artifact;
 	}
 
-	Artifact getArtifact() {
+	public Artifact getArtifact() {
 		return artifact;
 	}
 
-	String getName() {
+	public String getName() {
 		return artifact.getName();
 	}
 
-	Set<Artifact> getHandlers() {
+	public Set<Artifact> getHandlers() {
 		return artifact.getIncomingRelationshipsOfRole(QueryHandlerDescriptor.role())
 				.stream()
 				.map(ArtifactRelationship::getSource)
 				.collect(Collectors.toSet());
 	}
 
-	Set<Artifact> getQueriers() {
+	public Set<Artifact> getQueriers() {
 		return artifact.getIncomingRelationshipsOfRole(QueryQuerierDescriptor.role())
 				.stream()
 				.map(ArtifactRelationship::getSource)

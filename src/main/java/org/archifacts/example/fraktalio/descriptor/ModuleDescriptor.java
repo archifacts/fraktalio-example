@@ -1,4 +1,4 @@
-package org.archifacts.example.fraktalio;
+package org.archifacts.example.fraktalio.descriptor;
 
 import java.util.Optional;
 

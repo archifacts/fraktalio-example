@@ -1,6 +1,6 @@
-package org.archifacts.example.fraktalio;
+package org.archifacts.example.fraktalio.model;
 
-import static org.archifacts.example.fraktalio.FraktalioDescriptors.RelationshipDescriptors.CommandSenderDescriptor;
+import static org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors.RelationshipDescriptors.CommandSenderDescriptor;
 import static org.archifacts.integration.axon.AxonDescriptors.RelationshipDescriptors.CommandHandlerDescriptor;
 
 import java.util.Set;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.archifacts.core.model.Artifact;
 import org.archifacts.core.model.ArtifactRelationship;
 
-final class FraktalioCommand {
+public final class FraktalioCommand {
 
 	private final Artifact artifact;
 
@@ -17,22 +17,22 @@ final class FraktalioCommand {
 		this.artifact = artifact;
 	}
 
-	Artifact getArtifact() {
+	public Artifact getArtifact() {
 		return artifact;
 	}
 
-	String getName() {
+	public String getName() {
 		return artifact.getName();
 	}
 
-	Set<Artifact> getHandlers() {
+	public Set<Artifact> getHandlers() {
 		return artifact.getIncomingRelationshipsOfRole(CommandHandlerDescriptor.role())
 				.stream()
 				.map(ArtifactRelationship::getSource)
 				.collect(Collectors.toSet());
 	}
 
-	Set<Artifact> getSenders() {
+	public Set<Artifact> getSenders() {
 		return artifact.getIncomingRelationshipsOfRole(CommandSenderDescriptor.role())
 				.stream()
 				.map(ArtifactRelationship::getSource)

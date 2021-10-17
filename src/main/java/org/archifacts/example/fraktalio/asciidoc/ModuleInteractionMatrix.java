@@ -1,4 +1,4 @@
-package org.archifacts.example.fraktalio;
+package org.archifacts.example.fraktalio.asciidoc;
 
 import static java.util.Comparator.comparing;
 
@@ -11,6 +11,11 @@ import java.util.stream.Collectors;
 
 import org.archifacts.core.model.Artifact;
 import org.archifacts.core.model.ArtifactContainer;
+import org.archifacts.example.fraktalio.model.FraktalioApplication;
+import org.archifacts.example.fraktalio.model.FraktalioCommand;
+import org.archifacts.example.fraktalio.model.FraktalioEvent;
+import org.archifacts.example.fraktalio.model.FraktalioModule;
+import org.archifacts.example.fraktalio.model.FraktalioQuery;
 import org.archifacts.integration.asciidoc.AsciiDocElement;
 
 final class ModuleInteractionMatrix implements AsciiDocElement {
