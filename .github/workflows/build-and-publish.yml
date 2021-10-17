@@ -24,4 +24,6 @@ jobs:
         distribution: 'adopt'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package
+      run: mvn --batch-mode --update-snapshots package
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
