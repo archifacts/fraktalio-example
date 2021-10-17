@@ -27,7 +27,7 @@ import com.structurizr.view.ComponentView;
 import com.structurizr.view.ContainerView;
 import com.structurizr.view.ViewSet;
 
-public class C4ModelRenderer implements AsciiDocElement {
+final class C4ModelRenderer implements AsciiDocElement {
 
 	private final FraktalioApplication application;
 
