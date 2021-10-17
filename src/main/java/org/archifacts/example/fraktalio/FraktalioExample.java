@@ -30,6 +30,7 @@ import java.nio.file.Path;
 
 import org.archifacts.core.model.Application;
 import org.archifacts.integration.asciidoc.AsciiDoc;
+import org.archifacts.integration.asciidoc.TextDocElement;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
@@ -55,7 +56,7 @@ public class FraktalioExample implements Runnable {
 		final Application application = initApplication(javaClasses);
 		try {
 			Files.createDirectories(outputFolder);
-			writeAsciidoc(application, outputFolder.resolve("fraktalio.adoc"));
+			writeAsciidoc(application, outputFolder.resolve("index.adoc"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -91,6 +92,7 @@ public class FraktalioExample implements Runnable {
 
 		AsciiDoc asciiDoc = new AsciiDoc("Fraktalio");
 		final FraktalioApplication fraktalioApplication = new FraktalioApplication(application);
+		asciiDoc.addDocElement(new TextDocElement("\ninclude::preamble.adoc[]\n") );
 		asciiDoc.addDocElement(new ModuleInteractionMatrix(fraktalioApplication));
 		asciiDoc.addDocElement(new C4ModelRenderer(fraktalioApplication));
 		try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
