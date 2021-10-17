@@ -47,8 +47,7 @@ public class FraktalioExample implements Runnable {
 	private static final String ApplicationPackage = "com.fraktalio";
 
 	public static void main(String[] args) {
-		int exitCode = new CommandLine(new FraktalioExample()).execute(args);
-		System.exit(exitCode);
+		new CommandLine(new FraktalioExample()).execute(args);
 	}
 
 	public void run() {
