@@ -103,7 +103,7 @@ public class C4ModelRenderer implements AsciiDocElement {
 	}
 
 	private Container container(ArtifactContainer artifactContainer) {
-		return containerMap.computeIfAbsent(artifactContainer, key -> softwareSystem.addContainer(key.getName()));
+		return containerMap.computeIfAbsent(artifactContainer, key -> softwareSystem.addContainer(key.getName(), "", "Module"));
 	}
 
 	private ContainerView initContainerView(final SoftwareSystem softwareSystem, final ViewSet views) {
