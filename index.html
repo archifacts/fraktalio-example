@@ -465,6 +465,18 @@ Two services are implemented in Java (Java 11 and Java 14) and one service is im
 <div class="sect1">
 <h2 id="_module_interactions">Module interactions</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>The first column and the first row represent the system&#8217;s modules. The second column lists all the events, commands and queries which are used across modules.</p>
+</div>
+<div class="paragraph">
+<p><span class="green"><span class="icon"><i class="fa fa-check-square"></i></span></span> is read as: The building block (event, command or query) is published, sent or queried by the row module on the left and handled by the column module.</p>
+</div>
+<div class="paragraph">
+<p><span class="red"><span class="icon"><i class="fa fa-minus-square"></i></span></span> is read as: The building block (event, command or query) is published, sent or queried by the row module on the left and <strong>not</strong> handled by the column module.</p>
+</div>
+<div class="paragraph">
+<p>The combination of the very same module is left out as this view focusses on interactions between modules.</p>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
@@ -538,12 +550,12 @@ Two services are implemented in Java (Java 11 and Java 14) and one service is im
 </table>
 <div class="imageblock">
 <div class="content">
-<img src="container-view.svg" alt="container view" width="316" height="479">
+<img src="container-view.svg" alt="container view" width="508" height="351">
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="courier.svg" alt="courier" width="910" height="495">
+<img src="restaurant.svg" alt="restaurant" width="1912" height="530">
 </div>
 </div>
 <div class="imageblock">
@@ -553,7 +565,7 @@ Two services are implemented in Java (Java 11 and Java 14) and one service is im
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="restaurant.svg" alt="restaurant" width="1929" height="530">
+<img src="courier.svg" alt="courier" width="910" height="495">
 </div>
 </div>
 </div>
@@ -561,7 +573,7 @@ Two services are implemented in Java (Java 11 and Java 14) and one service is im
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-17 18:07:01 UTC
+Last updated 2021-10-19 18:25:32 UTC
 </div>
 </div>
 </body>
