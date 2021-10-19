@@ -1,3 +1,3 @@
 # fraktalio-example
 
-See https://archifacts.github.io/fraktalio-example/index.html for more information.
+See https://archifacts.github.io/fraktalio-example/ for more information.
