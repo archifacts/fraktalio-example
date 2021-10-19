@@ -7,15 +7,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.archifacts.core.model.Artifact;
 import org.archifacts.core.model.ArtifactContainer;
 import org.archifacts.example.fraktalio.model.FraktalioApplication;
-import org.archifacts.example.fraktalio.model.FraktalioCommand;
-import org.archifacts.example.fraktalio.model.FraktalioEvent;
+import org.archifacts.example.fraktalio.model.FraktalioBuildingBlock;
 import org.archifacts.example.fraktalio.model.FraktalioModule;
-import org.archifacts.example.fraktalio.model.FraktalioQuery;
 import org.archifacts.integration.asciidoc.AsciiDocElement;
 
 final class ModuleInteractionMatrix implements AsciiDocElement {
@@ -29,6 +29,10 @@ final class ModuleInteractionMatrix implements AsciiDocElement {
 	public String render() {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("\n== Module interactions");
+		stringBuilder.append("\n\nThe first column and the first row represent the system's modules. The second column lists all the events, commands and queries which are used across modules.");
+		stringBuilder.append("\n\n[green]#icon:check-square[]# is read as: The building block (event, command or query) is published, sent or queried by the row module on the left and handled by the column module." );
+		stringBuilder.append("\n\n[red]#icon:minus-square[]# is read as: The building block (event, command or query) is published, sent or queried by the row module on the left and *not* handled by the column module." );
+		stringBuilder.append("\n\nThe combination of the very same module is left out as this view focusses on interactions between modules.\n" );
 		final List<FraktalioModule> modules = application.getModules().stream().sorted(comparing(FraktalioModule::getName)).collect(Collectors.toList());
 		final List<ArtifactContainer> containers = modules.stream().map(FraktalioModule::getArtifactContainer).collect(Collectors.toList());
 
@@ -39,80 +43,10 @@ final class ModuleInteractionMatrix implements AsciiDocElement {
 		stringBuilder.append("\n|||").append(headerDef);
 		for (FraktalioModule module : modules) {
 			List<String> moduleEntries = new ArrayList<>();
-			// Events
-			for (FraktalioEvent publishedEvent : module.getPublishedEvents()) {
-				final Set<ArtifactContainer> handlers = publishedEvent.getHandlers().stream()
-						.map(Artifact::getContainer)
-						.filter(Optional::isPresent)
-						.map(Optional::get)
-						.filter(candidate -> candidate != module.getArtifactContainer())
-						.collect(Collectors.toSet());
-				if (!handlers.isEmpty()) {
-					StringBuilder sb = new StringBuilder();
-					sb.append("\nh|").append(publishedEvent.getName());
-					for (ArtifactContainer artifactContainer : containers) {
-						sb.append("\n^|");
-						if (artifactContainer != module.getArtifactContainer()) {
-							if (handlers.contains(artifactContainer)) {
-								sb.append("[green]#icon:check-square[]#");
-							} else {
-								sb.append("[red]#icon:minus-square[]#");
-							}
-						}
-					}
-					moduleEntries.add(sb.toString());
-				}
-			}
-
-			// Commands
-			for (FraktalioCommand sentCommands : module.getSentCommands()) {
-				final Set<ArtifactContainer> handlers = sentCommands.getHandlers().stream()
-						.map(Artifact::getContainer)
-						.filter(Optional::isPresent)
-						.map(Optional::get)
-						.filter(candidate -> candidate != module.getArtifactContainer())
-						.collect(Collectors.toSet());
-				if (!handlers.isEmpty()) {
-					StringBuilder sb = new StringBuilder();
-					sb.append("\nh|").append(sentCommands.getName());
-					for (ArtifactContainer artifactContainer : containers) {
-						sb.append("\n^|");
-						if (artifactContainer != module.getArtifactContainer()) {
-							if (handlers.contains(artifactContainer)) {
-								sb.append("[green]#icon:check-square[]#");
-							} else {
-								sb.append("[red]#icon:minus-square[]#");
-							}
-						}
-					}
-					moduleEntries.add(sb.toString());
-				}
-			}
-
-			// Queries
-			for (FraktalioQuery queriesQueries : module.getQueriedQueries()) {
-				final Set<ArtifactContainer> handlers = queriesQueries.getHandlers().stream()
-						.map(Artifact::getContainer)
-						.filter(Optional::isPresent)
-						.map(Optional::get)
-						.filter(candidate -> candidate != module.getArtifactContainer())
-						.collect(Collectors.toSet());
-				if (!handlers.isEmpty()) {
-					StringBuilder sb = new StringBuilder();
-					sb.append("\nh|").append(queriesQueries.getName());
-					for (ArtifactContainer artifactContainer : containers) {
-						sb.append("\n^|");
-						if (artifactContainer != module.getArtifactContainer()) {
-							if (handlers.contains(artifactContainer)) {
-								sb.append("[green]#icon:check-square[]#");
-							} else {
-								sb.append("[red]#icon:minus-square[]#");
-							}
-						}
-					}
-					moduleEntries.add(sb.toString());
-				}
-			}
+			final ModuleEntryBuilder moduleEntryBuilder = new ModuleEntryBuilder(containers, module, moduleEntries::add);
+			moduleEntryBuilder.build(FraktalioModule::getPublishedEvents);
+			moduleEntryBuilder.build(FraktalioModule::getSentCommands);
+			moduleEntryBuilder.build(FraktalioModule::getQueriedQueries);
 
 			if (!moduleEntries.isEmpty()) {
 				Collections.sort(moduleEntries);
@@ -128,4 +62,43 @@ final class ModuleInteractionMatrix implements AsciiDocElement {
 
 	}
 
+	private static class ModuleEntryBuilder {
+		private final List<ArtifactContainer> containers;
+		private final FraktalioModule module;
+		private final Consumer<String> moduleEntryAcceptor;
+		
+		private ModuleEntryBuilder(List<ArtifactContainer> containers, FraktalioModule module, Consumer<String> moduleEntryAcceptor) {
+			this.containers = containers;
+			this.module = module;
+			this.moduleEntryAcceptor = moduleEntryAcceptor;
+		}
+		
+		void build(Function<FraktalioModule, Set<? extends FraktalioBuildingBlock>> buildingBlockProvider) {
+			for (FraktalioBuildingBlock buildingBlock : buildingBlockProvider.apply(module)) {
+				final Set<ArtifactContainer> handlers = buildingBlock.getHandlers().stream()
+						.map(Artifact::getContainer)
+						.filter(Optional::isPresent)
+						.map(Optional::get)
+						.filter(candidate -> candidate != module.getArtifactContainer())
+						.collect(Collectors.toSet());
+				if (!handlers.isEmpty()) {
+					StringBuilder sb = new StringBuilder();
+					sb.append("\nh|").append(buildingBlock.getName());
+					for (ArtifactContainer artifactContainer : containers) {
+						sb.append("\n^|");
+						if (artifactContainer != module.getArtifactContainer()) {
+							if (handlers.contains(artifactContainer)) {
+								sb.append("[green]#icon:check-square[]#");
+							} else {
+								sb.append("[red]#icon:minus-square[]#");
+							}
+						}
+					}
+					moduleEntryAcceptor.accept(sb.toString());
+				}
+			}
+			
+		}
+		
+	}
 }

@@ -8,34 +8,24 @@ import java.util.stream.Collectors;
 
 import org.archifacts.core.model.Artifact;
 import org.archifacts.core.model.ArtifactRelationship;
+import org.archifacts.core.model.ArtifactRelationshipRole;
 
-public final class FraktalioCommand {
+public final class FraktalioCommand extends FraktalioBuildingBlock{
 
-	private final Artifact artifact;
 
 	public FraktalioCommand(Artifact artifact) {
-		this.artifact = artifact;
-	}
-
-	public Artifact getArtifact() {
-		return artifact;
-	}
-
-	public String getName() {
-		return artifact.getName();
-	}
-
-	public Set<Artifact> getHandlers() {
-		return artifact.getIncomingRelationshipsOfRole(CommandHandlerDescriptor.role())
-				.stream()
-				.map(ArtifactRelationship::getSource)
-				.collect(Collectors.toSet());
+		super(artifact);
 	}
 
 	public Set<Artifact> getSenders() {
-		return artifact.getIncomingRelationshipsOfRole(CommandSenderDescriptor.role())
+		return getArtifact().getIncomingRelationshipsOfRole(CommandSenderDescriptor.role())
 				.stream()
 				.map(ArtifactRelationship::getSource)
 				.collect(Collectors.toSet());
+	}
+
+	@Override
+	protected ArtifactRelationshipRole getHandlerRole() {
+		return CommandHandlerDescriptor.role();
 	}
 }

@@ -17,7 +17,7 @@ public class AsciiDocWriter {
 
 		AsciiDoc asciiDoc = new AsciiDoc("Fraktalio");
 		final FraktalioApplication fraktalioApplication = new FraktalioApplication(application);
-		asciiDoc.addDocElement(new TextDocElement("\ninclude::preamble.adoc[]\n") );
+		asciiDoc.addDocElement(new TextDocElement("\ninclude::_preamble.adoc[]\n") );
 		asciiDoc.addDocElement(new ModuleInteractionMatrix(fraktalioApplication));
 		asciiDoc.addDocElement(new C4ModelRenderer(fraktalioApplication));
 		try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {

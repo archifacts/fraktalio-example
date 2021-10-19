@@ -8,34 +8,23 @@ import java.util.stream.Collectors;
 
 import org.archifacts.core.model.Artifact;
 import org.archifacts.core.model.ArtifactRelationship;
+import org.archifacts.core.model.ArtifactRelationshipRole;
 
-public final class FraktalioQuery {
-
-	private final Artifact artifact;
+public final class FraktalioQuery extends FraktalioBuildingBlock {
 
 	public FraktalioQuery(Artifact artifact) {
-		this.artifact = artifact;
-	}
-
-	public Artifact getArtifact() {
-		return artifact;
-	}
-
-	public String getName() {
-		return artifact.getName();
-	}
-
-	public Set<Artifact> getHandlers() {
-		return artifact.getIncomingRelationshipsOfRole(QueryHandlerDescriptor.role())
-				.stream()
-				.map(ArtifactRelationship::getSource)
-				.collect(Collectors.toSet());
+		super(artifact);
 	}
 
 	public Set<Artifact> getQueriers() {
-		return artifact.getIncomingRelationshipsOfRole(QueryQuerierDescriptor.role())
+		return getArtifact().getIncomingRelationshipsOfRole(QueryQuerierDescriptor.role())
 				.stream()
 				.map(ArtifactRelationship::getSource)
 				.collect(Collectors.toSet());
+	}
+
+	@Override
+	protected ArtifactRelationshipRole getHandlerRole() {
+		return QueryHandlerDescriptor.role();
 	}
 }
