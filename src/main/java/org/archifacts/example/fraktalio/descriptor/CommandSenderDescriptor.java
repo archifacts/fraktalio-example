@@ -12,7 +12,7 @@ import org.archifacts.core.model.BuildingBlock;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaConstructorCall;
 
-class CommandSenderDescriptor implements TargetBasedArtifactRelationshipDescriptor {
+final class CommandSenderDescriptor implements TargetBasedArtifactRelationshipDescriptor {
 
 	private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("sends");
 
@@ -22,12 +22,12 @@ class CommandSenderDescriptor implements TargetBasedArtifactRelationshipDescript
 	}
 
 	@Override
-	public boolean isTarget(Artifact targetCandidateArtifact) {
-		return targetCandidateArtifact instanceof BuildingBlock buildingBlock && buildingBlock.getType() == CommandDescriptor.type();
+	public boolean isTarget(final Artifact targetCandidateArtifact) {
+		return targetCandidateArtifact instanceof final BuildingBlock buildingBlock && buildingBlock.getType() == CommandDescriptor.type();
 	}
 
 	@Override
-	public Stream<JavaClass> sources(JavaClass targetClass) {
+	public Stream<JavaClass> sources(final JavaClass targetClass) {
 		return targetClass.getConstructorCallsToSelf()
 			.stream()
 			.map(JavaConstructorCall::getOriginOwner)

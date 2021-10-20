@@ -12,7 +12,7 @@ import org.archifacts.core.model.BuildingBlock;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaConstructorCall;
 
-class QueryQuerierDescriptor implements TargetBasedArtifactRelationshipDescriptor {
+final class QueryQuerierDescriptor implements TargetBasedArtifactRelationshipDescriptor {
 
 	private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("queries");
 
@@ -22,12 +22,12 @@ class QueryQuerierDescriptor implements TargetBasedArtifactRelationshipDescripto
 	}
 
 	@Override
-	public boolean isTarget(Artifact targetCandidateArtifact) {
-		return targetCandidateArtifact instanceof BuildingBlock buildingBlock && buildingBlock.getType() == QueryDescriptor.type();
+	public boolean isTarget(final Artifact targetCandidateArtifact) {
+		return targetCandidateArtifact instanceof final BuildingBlock buildingBlock && buildingBlock.getType() == QueryDescriptor.type();
 	}
 
 	@Override
-	public Stream<JavaClass> sources(JavaClass targetClass) {
+	public Stream<JavaClass> sources(final JavaClass targetClass) {
 		return targetClass.getConstructorCallsToSelf()
 			.stream()
 			.map(JavaConstructorCall::getOriginOwner)

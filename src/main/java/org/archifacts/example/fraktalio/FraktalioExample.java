@@ -44,17 +44,18 @@ public class FraktalioExample implements Runnable {
 
 	private static final String ApplicationPackage = "com.fraktalio";
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		new CommandLine(new FraktalioExample()).execute(args);
 	}
 
+	@Override
 	public void run() {
 		final JavaClasses javaClasses = new ClassFileImporter().importPackages(ApplicationPackage);
 		final Application application = initApplication(javaClasses);
 		try {
 			Files.createDirectories(outputFolder);
 			new AsciiDocWriter().writeAsciidoc(application, outputFolder.resolve("index.adoc"));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
 	}

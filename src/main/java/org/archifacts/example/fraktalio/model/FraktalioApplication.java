@@ -14,17 +14,17 @@ import org.archifacts.example.fraktalio.descriptor.FraktalioDescriptors;
 public class FraktalioApplication {
 	private final Application application;
 
-	public FraktalioApplication(Application application) {
+	public FraktalioApplication(final Application application) {
 		this.application = application;
 	}
-	
+
 	public Set<FraktalioModule> getModules( ) {
 		return application.getContainersOfType(FraktalioDescriptors.ContainerDescriptors.ModuleDescriptor.type())
 					.stream()
 					.map(FraktalioModule::new)
 					.collect(Collectors.toSet());
 	}
-	
+
 	public Set<FraktalioEvent> getPublishedEvents() {
 		return application.getRelationshipsOfRole(EventPublisherDescriptor.role())
 				.stream()
@@ -32,7 +32,7 @@ public class FraktalioApplication {
 				.map(FraktalioEvent::new)
 				.collect(Collectors.toSet());
 	}
-	
+
 	public Set<FraktalioCommand> getSentCommands() {
 		return application.getRelationshipsOfRole(CommandSenderDescriptor.role())
 				.stream()
@@ -40,7 +40,7 @@ public class FraktalioApplication {
 				.map(FraktalioCommand::new)
 				.collect(Collectors.toSet());
 	}
-	
+
 	public Set<FraktalioQuery> getQueriedQueries() {
 		return application.getRelationshipsOfRole(QueryQuerierDescriptor.role())
 				.stream()

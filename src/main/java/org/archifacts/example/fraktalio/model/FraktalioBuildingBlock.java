@@ -11,7 +11,7 @@ public abstract class FraktalioBuildingBlock {
 
 	private final Artifact artifact;
 
-	protected FraktalioBuildingBlock(Artifact artifact) {
+	protected FraktalioBuildingBlock(final Artifact artifact) {
 		this.artifact = artifact;
 	}
 

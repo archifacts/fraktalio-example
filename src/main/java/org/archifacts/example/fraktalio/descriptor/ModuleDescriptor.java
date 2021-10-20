@@ -26,7 +26,7 @@ final class ModuleDescriptor implements ArtifactContainerDescriptor {
 	private Optional<String> moduleOf(final JavaPackage javaPackage) {
 		return toJavaOptional(javaPackage.getParent()).map(parent -> {
 			if (basePackage.equals(parent.getName())) {
-				String relativeName = javaPackage.getRelativeName();
+				final String relativeName = javaPackage.getRelativeName();
 				if (!"api".equals(relativeName)) {
 					return Optional.of(relativeName);
 				} else {

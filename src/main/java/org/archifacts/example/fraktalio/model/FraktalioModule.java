@@ -13,18 +13,18 @@ public final class FraktalioModule {
 
 	private final ArtifactContainer artifactContainer;
 
-	public FraktalioModule(ArtifactContainer artifactContainer) {
+	public FraktalioModule(final ArtifactContainer artifactContainer) {
 		this.artifactContainer = artifactContainer;
 	}
-	
+
 	public ArtifactContainer getArtifactContainer() {
 		return artifactContainer;
 	}
-	
+
 	public String getName() {
 		return artifactContainer.getName();
 	}
-	
+
 	public Set<FraktalioEvent> getPublishedEvents() {
 		return artifactContainer.getOutgoingRelationshipsOfRole(EventPublisherDescriptor.role())
 				.stream()
@@ -32,7 +32,7 @@ public final class FraktalioModule {
 				.map(FraktalioEvent::new)
 				.collect(Collectors.toSet());
 	}
-	
+
 	public Set<FraktalioCommand> getSentCommands() {
 		return artifactContainer.getOutgoingRelationshipsOfRole(CommandSenderDescriptor.role())
 				.stream()
@@ -40,7 +40,7 @@ public final class FraktalioModule {
 				.map(FraktalioCommand::new)
 				.collect(Collectors.toSet());
 	}
-	
+
 	public Set<FraktalioQuery> getQueriedQueries() {
 		return artifactContainer.getOutgoingRelationshipsOfRole(QueryQuerierDescriptor.role())
 				.stream()

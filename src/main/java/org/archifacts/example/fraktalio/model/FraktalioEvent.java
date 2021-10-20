@@ -12,7 +12,7 @@ import org.archifacts.core.model.ArtifactRelationshipRole;
 
 public final class FraktalioEvent extends FraktalioBuildingBlock {
 
-	public FraktalioEvent(Artifact artifact) {
+	public FraktalioEvent(final Artifact artifact) {
 		super(artifact);
 	}
 

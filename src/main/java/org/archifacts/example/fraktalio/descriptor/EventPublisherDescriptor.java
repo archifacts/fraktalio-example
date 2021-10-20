@@ -12,7 +12,7 @@ import org.archifacts.core.model.BuildingBlock;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaConstructorCall;
 
-class EventPublisherDescriptor implements TargetBasedArtifactRelationshipDescriptor {
+final class EventPublisherDescriptor implements TargetBasedArtifactRelationshipDescriptor {
 
 	private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("publishes");
 
@@ -22,12 +22,12 @@ class EventPublisherDescriptor implements TargetBasedArtifactRelationshipDescrip
 	}
 
 	@Override
-	public boolean isTarget(Artifact targetCandidateArtifact) {
-		return targetCandidateArtifact instanceof BuildingBlock buildingBlock && buildingBlock.getType() == EventDescriptor.type();
+	public boolean isTarget(final Artifact targetCandidateArtifact) {
+		return targetCandidateArtifact instanceof final BuildingBlock buildingBlock && buildingBlock.getType() == EventDescriptor.type();
 	}
 
 	@Override
-	public Stream<JavaClass> sources(JavaClass targetClass) {
+	public Stream<JavaClass> sources(final JavaClass targetClass) {
 		return targetClass.getConstructorCallsToSelf()
 			.stream()
 			.map(JavaConstructorCall::getOriginOwner)

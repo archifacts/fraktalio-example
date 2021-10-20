@@ -13,7 +13,7 @@ import org.archifacts.core.model.ArtifactRelationshipRole;
 public final class FraktalioCommand extends FraktalioBuildingBlock{
 
 
-	public FraktalioCommand(Artifact artifact) {
+	public FraktalioCommand(final Artifact artifact) {
 		super(artifact);
 	}
 

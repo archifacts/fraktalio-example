@@ -13,9 +13,9 @@ import org.archifacts.integration.asciidoc.TextDocElement;
 
 public class AsciiDocWriter {
 
-	public void writeAsciidoc(final Application application, Path outputFile) throws IOException {
+	public void writeAsciidoc(final Application application, final Path outputFile) throws IOException {
 
-		AsciiDoc asciiDoc = new AsciiDoc("Fraktalio");
+		final AsciiDoc asciiDoc = new AsciiDoc("Fraktalio");
 		final FraktalioApplication fraktalioApplication = new FraktalioApplication(application);
 		asciiDoc.addDocElement(new TextDocElement("\ninclude::_preamble.adoc[]\n") );
 		asciiDoc.addDocElement(new ModuleInteractionMatrix(fraktalioApplication));

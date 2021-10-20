@@ -22,12 +22,13 @@ final class ModuleInteractionMatrix implements AsciiDocElement {
 
 	private final FraktalioApplication application;
 
-	ModuleInteractionMatrix(FraktalioApplication application) {
+	ModuleInteractionMatrix(final FraktalioApplication application) {
 		this.application = application;
 	}
 
+	@Override
 	public String render() {
-		StringBuilder stringBuilder = new StringBuilder();
+		final StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("\n== Module interactions");
 		stringBuilder.append("\n\nThe first column and the first row represent the system's modules. The second column lists all the events, commands and queries which are used across modules.");
 		stringBuilder.append("\n\n[green]#icon:check-square[]# is read as: The building block (event, command or query) is published, sent or queried by the row module on the left and handled by the column module." );
@@ -36,13 +37,13 @@ final class ModuleInteractionMatrix implements AsciiDocElement {
 		final List<FraktalioModule> modules = application.getModules().stream().sorted(comparing(FraktalioModule::getName)).collect(Collectors.toList());
 		final List<ArtifactContainer> containers = modules.stream().map(FraktalioModule::getArtifactContainer).collect(Collectors.toList());
 
-		String colDef = modules.stream().map(x -> "1").collect(Collectors.joining(","));
+		final String colDef = modules.stream().map(x -> "1").collect(Collectors.joining(","));
 		stringBuilder.append("\n[%header,cols=\"1,1,").append(colDef).append("\"]");
 		stringBuilder.append("\n|===");
-		String headerDef = modules.stream().map(FraktalioModule::getName).collect(Collectors.joining("|"));
+		final String headerDef = modules.stream().map(FraktalioModule::getName).collect(Collectors.joining("|"));
 		stringBuilder.append("\n|||").append(headerDef);
-		for (FraktalioModule module : modules) {
-			List<String> moduleEntries = new ArrayList<>();
+		for (final FraktalioModule module : modules) {
+			final List<String> moduleEntries = new ArrayList<>();
 			final ModuleEntryBuilder moduleEntryBuilder = new ModuleEntryBuilder(containers, module, moduleEntries::add);
 			moduleEntryBuilder.build(FraktalioModule::getPublishedEvents);
 			moduleEntryBuilder.build(FraktalioModule::getSentCommands);
@@ -66,15 +67,15 @@ final class ModuleInteractionMatrix implements AsciiDocElement {
 		private final List<ArtifactContainer> containers;
 		private final FraktalioModule module;
 		private final Consumer<String> moduleEntryAcceptor;
-		
-		private ModuleEntryBuilder(List<ArtifactContainer> containers, FraktalioModule module, Consumer<String> moduleEntryAcceptor) {
+
+		private ModuleEntryBuilder(final List<ArtifactContainer> containers, final FraktalioModule module, final Consumer<String> moduleEntryAcceptor) {
 			this.containers = containers;
 			this.module = module;
 			this.moduleEntryAcceptor = moduleEntryAcceptor;
 		}
-		
-		void build(Function<FraktalioModule, Set<? extends FraktalioBuildingBlock>> buildingBlockProvider) {
-			for (FraktalioBuildingBlock buildingBlock : buildingBlockProvider.apply(module)) {
+
+		void build(final Function<FraktalioModule, Set<? extends FraktalioBuildingBlock>> buildingBlockProvider) {
+			for (final FraktalioBuildingBlock buildingBlock : buildingBlockProvider.apply(module)) {
 				final Set<ArtifactContainer> handlers = buildingBlock.getHandlers().stream()
 						.map(Artifact::getContainer)
 						.filter(Optional::isPresent)
@@ -82,9 +83,9 @@ final class ModuleInteractionMatrix implements AsciiDocElement {
 						.filter(candidate -> candidate != module.getArtifactContainer())
 						.collect(Collectors.toSet());
 				if (!handlers.isEmpty()) {
-					StringBuilder sb = new StringBuilder();
+					final StringBuilder sb = new StringBuilder();
 					sb.append("\nh|").append(buildingBlock.getName());
-					for (ArtifactContainer artifactContainer : containers) {
+					for (final ArtifactContainer artifactContainer : containers) {
 						sb.append("\n^|");
 						if (artifactContainer != module.getArtifactContainer()) {
 							if (handlers.contains(artifactContainer)) {
@@ -97,8 +98,8 @@ final class ModuleInteractionMatrix implements AsciiDocElement {
 					moduleEntryAcceptor.accept(sb.toString());
 				}
 			}
-			
+
 		}
-		
+
 	}
 }

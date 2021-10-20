@@ -12,7 +12,7 @@ import org.archifacts.core.model.ArtifactRelationshipRole;
 
 public final class FraktalioQuery extends FraktalioBuildingBlock {
 
-	public FraktalioQuery(Artifact artifact) {
+	public FraktalioQuery(final Artifact artifact) {
 		super(artifact);
 	}
 

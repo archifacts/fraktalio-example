@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.archifacts.core.model.Artifact;
+import org.archifacts.core.model.ArtifactContainer;
 import org.archifacts.core.model.BuildingBlock;
+import org.archifacts.core.model.ExternalArtifact;
 import org.archifacts.core.model.MiscArtifact;
 import org.archifacts.example.fraktalio.model.FraktalioApplication;
 import org.archifacts.example.fraktalio.model.FraktalioCommand;
 import org.archifacts.example.fraktalio.model.FraktalioEvent;
 import org.archifacts.example.fraktalio.model.FraktalioQuery;
-import org.archifacts.core.model.ExternalArtifact;
-import org.archifacts.core.model.Artifact;
-import org.archifacts.core.model.ArtifactContainer;
 import org.archifacts.integration.asciidoc.AsciiDocElement;
 import org.archifacts.integration.c4.asciidoc.plantuml.ComponentViewPlantUMLDocElement;
 import org.archifacts.integration.c4.asciidoc.plantuml.ContainerViewPlantUMLDocElement;
@@ -36,7 +36,7 @@ final class C4ModelRenderer implements AsciiDocElement {
 
 	private SoftwareSystem softwareSystem;
 
-	C4ModelRenderer(FraktalioApplication application) {
+	C4ModelRenderer(final FraktalioApplication application) {
 		this.application = application;
 	}
 
@@ -44,28 +44,28 @@ final class C4ModelRenderer implements AsciiDocElement {
 	public String render() {
 		final Workspace c4Workspace = new Workspace("Fraktalio", null);
 		softwareSystem = initSoftwareSystem(c4Workspace);
-		for (FraktalioEvent event : application.getPublishedEvents()) {
-			for (Artifact publisher : event.getPublishers()) {
+		for (final FraktalioEvent event : application.getPublishedEvents()) {
+			for (final Artifact publisher : event.getPublishers()) {
 				final Component publisherComponent = component(publisher);
-				for (Artifact handler : event.getHandlers()) {
+				for (final Artifact handler : event.getHandlers()) {
 					final Component handlerComponent = component(handler);
 					publisherComponent.uses(handlerComponent, "Event");
 				}
 			}
 		}
-		for (FraktalioCommand command : application.getSentCommands()) {
-			for (Artifact publisher : command.getSenders()) {
+		for (final FraktalioCommand command : application.getSentCommands()) {
+			for (final Artifact publisher : command.getSenders()) {
 				final Component publisherComponent = component(publisher);
-				for (Artifact handler : command.getHandlers()) {
+				for (final Artifact handler : command.getHandlers()) {
 					final Component handlerComponent = component(handler);
 					publisherComponent.uses(handlerComponent, "Command");
 				}
 			}
 		}
-		for (FraktalioQuery query : application.getQueriedQueries()) {
-			for (Artifact publisher : query.getQueriers()) {
+		for (final FraktalioQuery query : application.getQueriedQueries()) {
+			for (final Artifact publisher : query.getQueriers()) {
 				final Component publisherComponent = component(publisher);
-				for (Artifact handler : query.getHandlers()) {
+				for (final Artifact handler : query.getHandlers()) {
 					final Component handlerComponent = component(handler);
 					publisherComponent.uses(handlerComponent, "Query");
 				}
@@ -91,13 +91,13 @@ final class C4ModelRenderer implements AsciiDocElement {
 		return softwareSystem;
 	}
 
-	private Component component(Artifact artifact) {
+	private Component component(final Artifact artifact) {
 		final String technology;
-		if (artifact instanceof BuildingBlock buildingBlock) {
+		if (artifact instanceof final BuildingBlock buildingBlock) {
 			technology = buildingBlock.getType().getName();
-		} else if (artifact instanceof MiscArtifact miscArtifact) {
+		} else if (artifact instanceof final MiscArtifact miscArtifact) {
 			technology = "Misc";
-		} else if (artifact instanceof ExternalArtifact externalArtifact) {
+		} else if (artifact instanceof final ExternalArtifact externalArtifact) {
 			technology = "External";
 		} else {
 			throw new IllegalArgumentException("Unexpected type: " + artifact.getClass().getName());
@@ -106,7 +106,7 @@ final class C4ModelRenderer implements AsciiDocElement {
 				.addComponent(key.getName(), key.getJavaClass().getName(), "", technology));
 	}
 
-	private Container container(ArtifactContainer artifactContainer) {
+	private Container container(final ArtifactContainer artifactContainer) {
 		return containerMap.computeIfAbsent(artifactContainer, key -> softwareSystem.addContainer(key.getName(), "", "Module"));
 	}
 
