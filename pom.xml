@@ -9,7 +9,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-		<archifacts.version>0.3.0-SNAPSHOT</archifacts.version>
+		<archifacts.version>0.3.0</archifacts.version>
 		<picocli.version>4.6.1</picocli.version>
 		<asciidoctor-maven-plugin.version>2.2.1</asciidoctor-maven-plugin.version>
 	</properties>
